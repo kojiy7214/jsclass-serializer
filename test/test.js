@@ -1,0 +1,130 @@
+const assert = require('assert');
+const Serializable = require('../../class-serializer')
+
+
+describe('Serializable', function() {
+  describe('Create sub class', function() {
+    it('#constructor()', function() {
+      let sc = class SubClass extends Serializable {};
+      let o = new sc();
+
+      assert.equal(o.classname, 'SubClass');
+      assert.equal(typeof o.serialize, 'function');
+      assert.equal(typeof o.deserialize, 'function');
+    })
+  })
+
+  describe('serialize/deserialize using static methods', function() {
+    it('#Serializable.serialize, deserialize()', function() {
+      let nc = class NestedSubClass extends Serializable {};
+
+      let sc = class SubClass extends Serializable {
+        constructor() {
+          super();
+
+          this._number = 1;
+          this._string = "test";
+          this._boolean = true;
+          this._array = [1, 2, 3];
+          this._object = new nc();
+          this._date = new Date('1995-12-17T03:24:00.000Z');
+        }
+      };
+      let source = new sc();
+
+      let json = Serializable.serialize(source);
+      let target = Serializable.deserialize(json);
+
+      //check type
+      assert.equal(target.classname, 'SubClass');
+      assert.equal(typeof target._number, 'number');
+      assert.equal(typeof target._string, 'string');
+      assert.equal(typeof target._boolean, 'boolean');
+      assert.equal(Array.isArray(target._array), true);
+      assert.equal(target._object instanceof nc, true);
+      assert.equal(target._date instanceof Date, true);
+
+      //check value
+      assert.equal(target._number, 1);
+      assert.equal(target._string, 'test');
+      assert.equal(target._boolean, true);
+      assert.equal(target._array.toString(), [1, 2, 3].toString());
+      assert.equal(target._object.classname, "NestedSubClass");
+      assert.equal(target._date.toISOString(), '1995-12-17T03:24:00.000Z');
+    })
+  })
+
+  describe('serialize/deserialize using object`s methods', function() {
+      it('#serialize, deserialize()', function() {
+          let nc = class NestedSubClass extends Serializable {};
+
+          let sc = class SubClass extends Serializable {
+            constructor() {
+              super();
+
+              this._number = 1;
+              this._string = "test";
+              this._boolean = true;
+              this._array = [1, 2, 3];
+              this._object = new nc();
+              this._date = new Date('1995-12-17T03:24:00.000Z');
+            }
+          };
+
+
+        let source = new sc();
+
+        source._number = 100;
+        source._string = "changed";
+        source._boolean = false;
+        source._array = ["a", "b", "c"];
+        source._object = {};
+        source._date = new Date('2018-12-17T03:24:00.000Z');
+
+        let json = source.serialize();
+
+        target = new sc();
+        target.deserialize(json);
+
+        //check type
+        assert.equal(typeof target._number, 'number');
+        assert.equal(typeof target._string, 'string');
+        assert.equal(typeof target._boolean, 'boolean');
+        assert.equal(Array.isArray(target._array), true);
+        assert.equal(target._object instanceof nc, false);
+        assert.equal(target._date instanceof Date, true);
+
+        //check value
+        assert.equal(target._number, 100);
+        assert.equal(target._string, 'changed');
+        assert.equal(target._boolean, false);
+        assert.equal(target._array.toString(), ["a", "b", "c"].toString());
+        assert.equal(target._object.classname, undefined);
+        assert.equal(target._date.toISOString(), '2018-12-17T03:24:00.000Z');
+      })
+  })
+
+  describe('deserialize to unmatched class based object, using object`s methods', function() {
+      it('#serialize, deserialize()', function() {
+          let nc = class NestedSubClass extends Serializable {};
+
+          let sc = class SubClass extends Serializable {
+            constructor() {
+              super();
+
+              this._number = 1;
+              this._string = "test";
+              this._boolean = true;
+              this._array = [1, 2, 3];
+              this._object = new nc();
+            }
+          };
+
+
+        let source = new sc();
+        let json = source.serialize();
+        let target = new nc();
+        target.deserialize(json);
+      })
+  })
+})

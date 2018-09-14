@@ -1,13 +1,16 @@
-# class-serializer
+# jsclass-serializer
 Yet another serialize module for Node.js, with unique feature that desrializ to its original class based Object.
 
 ## What Makes class-serializer Unique
-Amoung many serializers, class-serializer module is unique for its class
+Amoung many serializers, jsclass-serializer module is unique for its class
 restore ability.  That is, deserializing does not result in creating
 Object object, but original class-based object are restored.
 
+## How to Use
+Just extend your class based on "Serializable" class.  And everything works.
+
 ## Date Ready
-"class-serializer" can de/serialize built-in Date type object collect.
+"jsclass-serializer" can de/serialize built-in Date type object collect.
 
 ## Some Notes
 Class serializer consumes global with namespace "__serializable_classes__".

@@ -8,7 +8,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/kojiy7214/class-serializer.git"
+    "url": "git+https://github.com/kojiy7214/jsclass-serializer.git"
   },
   "keywords": [
     "es6",
@@ -19,9 +19,9 @@
   "author": "koji7214@gmail.com",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/kojiy7214/class-serializer/issues"
+    "url": "https://github.com/kojiy7214/jsclass-serializer/issues"
   },
-  "homepage": "https://github.com/kojiy7214/class-serializer#readme",
+  "homepage": "https://github.com/kojiy7214/jsclass-serializer#readme",
   "devDependencies": {
     "mocha": "^5.2.0"
   }

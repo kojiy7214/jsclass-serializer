@@ -13,14 +13,16 @@ Just extend your class based on "Serializable" class.  And everything works.
 "jsclass-serializer" can de/serialize built-in Date type object collect.
 
 ## Some Notes
+### Use of Global Namespace
 Class serializer consumes global with namespace "__serializable_classes__".
 Within this name space, every constructor of Serializable subclasses are
 stored.  This is because of its module-scoped nature of node, by default
 class-serializer can not recognize target class definition.  Please note that
 this results in extra node instance memory space
 consuming.
-Serializable subclasses are forced to have(auto defined) property "classname".  
-It is necessary for class-serializer to recognize application defined classes.
+
+### Property "classname" Is Attached Automatically
+Serializable attaches property "classname" to its subclasses.  
 Be aware classname is an enumerable property, which means developer may
 have to handle classname property while iterating other user defined
 properties.

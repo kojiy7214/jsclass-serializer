@@ -1,4 +1,4 @@
-# jsclass-serializer
+# jsclass-serializer (NOW MIX-IN READY!)
 Yet another serialize module for Node.js, with unique feature that desrializ to its original class based Object.
 
 ## What Makes class-serializer Unique

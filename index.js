@@ -96,7 +96,7 @@ module.exports = class Serializable {
     let classname = that.constructor.name;
     !global.__serializable_classes__ && (global.__serializable_classes__ = {});
     global.__serializable_classes__[classname] = that.constructor;
-    this.classname = classname;
+    that.classname = classname;
     Object.defineProperty(that, "classname", {
       configurable: false,
       writable: true,

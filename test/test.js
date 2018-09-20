@@ -1,5 +1,6 @@
 const assert = require('assert');
 const Serializable = require('../../jsclass-serializer')
+const mix = require('jsclass-mixin')
 
 
 describe('Serializable', function() {
@@ -125,6 +126,27 @@ describe('Serializable', function() {
       let json = source.serialize();
       let target = new nc();
       target.deserialize(json);
+    })
+  })
+
+  describe('use serializer with jsclass-mixin', function() {
+    it('#serialize, deserialize()', function() {
+      let bc = class B {};
+
+      let sc = class A extends mix(bc, Serializable) {
+        constructor() {
+          super();
+
+          Serializable.new(this);
+        }
+      };
+
+
+      let source = new sc();
+      let json = source.serialize();
+      let target = Serializable.deserialize(json);
+
+      assert(target instanceof sc, true);
     })
   })
 })

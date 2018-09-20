@@ -56,8 +56,8 @@
 /**
  * Proxy class to support Date type object de/serialization.
  */
-class DateProxyForClassSerializer{
-  constructor(date){
+class DateProxyForClassSerializer {
+  constructor(date) {
     this.classname = "DateProxyForClassSerializer";
     this.value = date;
   }
@@ -65,8 +65,8 @@ class DateProxyForClassSerializer{
 
 module.exports = class Serializable {
   static serialize(o) {
-    let r = function(k, v){
-      if ( o[k] instanceof Date){
+    let r = function(k, v) {
+      if (o[k] instanceof Date) {
         v = new DateProxyForClassSerializer(v);
       }
       return v;
@@ -76,11 +76,11 @@ module.exports = class Serializable {
 
   static deserialize(s) {
     let r = function(k, v) {
-      if (v instanceof Object && v.classname ){
-        if ( global.__serializable_classes__[v.classname]) {
+      if (v instanceof Object && v.classname) {
+        if (global.__serializable_classes__[v.classname]) {
           let c = global.__serializable_classes__[v.classname];
           v = Object.assign(new c(), v);
-        }else if( v.classname === "DateProxyForClassSerializer" ){
+        } else if (v.classname === "DateProxyForClassSerializer") {
           return new Date(v.value);
         }
       }
@@ -90,12 +90,14 @@ module.exports = class Serializable {
     return JSON.parse(s, r);
   }
 
-  constructor() {
-    let classname = this.constructor.name;
+  constructor(baseclass) {
+    let that = baseclass || this;
+
+    let classname = that.constructor.name;
     !global.__serializable_classes__ && (global.__serializable_classes__ = {});
-    global.__serializable_classes__[classname] = this.constructor;
+    global.__serializable_classes__[classname] = that.constructor;
     this.classname = classname;
-    Object.defineProperty(this, "classname", {
+    Object.defineProperty(that, "classname", {
       configurable: false,
       writable: true,
     });
@@ -107,8 +109,8 @@ module.exports = class Serializable {
 
   deserialize(json) {
     let o = Serializable.deserialize(json);
-    if (! this instanceof o.constructor) {
-      throw "Type unmatch: [" + this.classname + "] is not instance of [" +  o.constructor.name +"]" ;
+    if (!this instanceof o.constructor) {
+      throw "Type unmatch: [" + this.classname + "] is not instance of [" + o.constructor.name + "]";
     }
     Object.assign(this, o);
   }

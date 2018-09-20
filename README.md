@@ -12,6 +12,35 @@ Just extend your class based on "Serializable" class.  And everything works.
 ## Date Ready
 "jsclass-serializer" can de/serialize built-in Date type object collect.
 
+## Works with "jsclass-mixin" (updated @ 0.1.5)
+When developer decide to extend his/her class from Serializable, developer
+should give up to extend from other classes.  That is a huge limitation, while
+Java Script allows only single inheritance.
+Now its not a limitation any more!  "jsclass-serializable" can be used with
+["jsclass-mixin"](https://www.npmjs.com/package/jsclass-mixin)!  
+Check out the code below!
+```
+// Serializable with jsclass-mixin
+class B {};
+
+class A extends mix(B, Serializable) {
+  constructor() {
+    super();
+
+    //call Serializable constructor with "this" makes class A serializable
+    Serializable.new(this);
+  }
+};
+
+
+let source = new A();
+let json = source.serialize();
+let target = Serializable.deserialize(json);
+
+//below code return true!
+console.log(target instanceof A);
+```
+
 ## Some Notes
 ### Use of Global Namespace
 Class serializer consumes global with namespace "__serializable_classes__".

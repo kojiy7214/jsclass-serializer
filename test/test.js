@@ -131,9 +131,9 @@ describe('Serializable', function() {
 
   describe('use serializer with jsclass-mixin', function() {
     it('#serialize, deserialize()', function() {
-      let bc = class B {};
+      class B {};
 
-      let sc = class A extends mix(bc, Serializable) {
+      class A extends mix(B, Serializable) {
         constructor() {
           super();
 
@@ -142,11 +142,11 @@ describe('Serializable', function() {
       };
 
 
-      let source = new sc();
+      let source = new A();
       let json = source.serialize();
       let target = Serializable.deserialize(json);
 
-      assert(target instanceof sc, true);
+      assert(target instanceof A, true);
     })
   })
 })

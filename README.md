@@ -21,6 +21,9 @@ Now its not a limitation any more!  "jsclass-serializable" can be used with
 Check out the code below!
 ```
 // Serializable with jsclass-mixin
+const Serializable = require('jsclass-serializer');
+const mix = require('jsclass-mixin');
+
 class B {};
 
 class A extends mix(B, Serializable) {

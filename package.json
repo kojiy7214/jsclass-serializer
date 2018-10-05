@@ -25,6 +25,7 @@
   "homepage": "https://github.com/kojiy7214/jsclass-serializer#readme",
   "devDependencies": {
     "documentation": "^8.1.2",
+    "jsdoc-md": "^1.6.0",
     "mocha": "^5.2.0"
   },
   "dependencies": {

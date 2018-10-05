@@ -2,26 +2,26 @@
 
 ### Table of Contents
 
--   [Serializable][1]
+-   [constructor][1]
     -   [Parameters][2]
 -   [setStoragePath][3]
     -   [Parameters][4]
--   [saveToFile][5]
-    -   [Parameters][6]
--   [saveToFile][7]
--   [loadFromFile][8]
-    -   [Parameters][9]
--   [loadFromFile][10]
-    -   [Parameters][11]
--   [serialize][12]
-    -   [Parameters][13]
--   [serialize][14]
+-   [serialize][5]
+-   [saveToFile][6]
+    -   [Parameters][7]
+-   [saveToFile][8]
+-   [loadFromFile][9]
+    -   [Parameters][10]
+-   [loadFromFile][11]
+    -   [Parameters][12]
+-   [serialize][13]
+    -   [Parameters][14]
 -   [deserialize][15]
     -   [Parameters][16]
 -   [deserialize][17]
     -   [Parameters][18]
 
-## Serializable
+## constructor
 
 "jsclass-serializer" provides features to serialize and deserialize to memory
 and to file in json format.  Deserializing returns instance of original class.
@@ -30,7 +30,27 @@ and to file in json format.  Deserializing returns instance of original class.
 
 -   `baseclass` **any** Set "this", when use with jsclass-mixin.
 
-## setStoragePath
+## (static) serialize
+
+Serialize object to json format.
+This method can serialize any type of object.
+
+### Parameters
+
+-   `o` **any** Object to serialize.
+
+Returns **[json][20]** Json text.
+
+## (static) deserialize
+
+Deserialize json text to object
+This method can deserialize any file with json text.
+
+### Parameters
+
+-   `json` **[json][20]** [description]
+
+## (static) setStoragePath
 
 Set directory path to save/load serialized information to/from file.
 
@@ -38,7 +58,7 @@ Set directory path to save/load serialized information to/from file.
 
 -   `p` **[string][19]** Absolute or relative directory path
 
-## saveToFile
+## (static) saveToFile
 
 Save serialized json object to file.  Where directory path would be the
 path previously set by setStoragePath().
@@ -51,15 +71,7 @@ This method can serialize any type of object.
 
 Returns **[json][20]** Json text.
 
-## saveToFile
-
-Save serialized json object to file.  Where directory path would be the
-path previously set by setStoragePath(), and file name would be set equally
-to given objects uuid.
-
-Returns **[json][20]** Json text.
-
-## loadFromFile
+## (static) loadFromFile
 
 Load json text from file and convert to object. Where directory path would
 be the path previously set by setStoragePath().
@@ -71,6 +83,29 @@ This method can deserialize any file with json text.
 
 Returns **any** Deserialized object.
 
+## serialize
+
+Serialize object to json format.
+
+Returns **[json][20]** Json text.
+
+## deserialize
+
+Deserialize json text to object
+
+### Parameters
+
+-   `json` **[json][20]** [description]
+
+## saveToFile
+
+Save serialized json object to file.  Where directory path would be the
+path previously set by setStoragePath(), and file name would be set equally
+to given objects uuid.
+
+Returns **[json][20]** Json text.
+
+
 ## loadFromFile
 
 Load json text from file and convert to object. Where directory path would
@@ -80,41 +115,8 @@ be the path previously set by setStoragePath().
 
 -   `uuid` **[string][19]** Unique identifier to specify the file to load from.
 
-## serialize
 
-Serialize object to json format.
-This method can serialize any type of object.
-
-### Parameters
-
--   `o` **any** Object to serialize.
-
-Returns **[json][20]** Json text.
-
-## serialize
-
-Serialize object to json format.
-
-Returns **[json][20]** Json text.
-
-## deserialize
-
-Deserialize json text to object
-This method can deserialize any file with json text.
-
-### Parameters
-
--   `json` **[json][20]** [description]
-
-## deserialize
-
-Deserialize json text to object
-
-### Parameters
-
--   `json` **[json][20]** [description]
-
-[1]: #serializable
+[1]: #constructor
 
 [2]: #parameters
 
@@ -122,25 +124,25 @@ Deserialize json text to object
 
 [4]: #parameters-1
 
-[5]: #savetofile
+[5]: #serialize
 
-[6]: #parameters-2
+[6]: #savetofile
 
-[7]: #savetofile-1
+[7]: #parameters-2
 
-[8]: #loadfromfile
+[8]: #savetofile-1
 
-[9]: #parameters-3
+[9]: #loadfromfile
 
-[10]: #loadfromfile-1
+[10]: #parameters-3
 
-[11]: #parameters-4
+[11]: #loadfromfile-1
 
-[12]: #serialize
+[12]: #parameters-4
 
-[13]: #parameters-5
+[13]: #serialize-1
 
-[14]: #serialize-1
+[14]: #parameters-5
 
 [15]: #deserialize
 

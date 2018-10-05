@@ -14,12 +14,16 @@ class DateProxyForClassSerializer {
 /**
  * "jsclass-serializer" provides features to serialize and deserialize to memory
  * and to file in json format.  Deserializing returns instance of original class.
+ * @method constructor
+ * @param  {any}    baseclass Set "this", when use with jsclass-mixin.
  */
 class Serializable {
   /**
    * Set directory path to save/load serialized information to/from file.
    * @method setStoragePath
    * @param  {string}       p Absolute or relative directory path
+   * @static
+   * @memberof Serializable.
    */
   static setStoragePath(p) {
     Serializable[environment].storage_path = p;
@@ -33,6 +37,7 @@ class Serializable {
    * @param  {any}   o Object to serialize.
    * @param  {string}   filename Filename to save object.
    * @return {json}     Json text.
+   * @static
    */
   static saveToFile(o, filename) {
     let json = Serializable.serialize(o);
@@ -61,6 +66,7 @@ class Serializable {
    * @method loadFromFile
    * @param  {string}     filename Filename to load json from.
    * @return {any}          Deserialized object.
+   * @static
    */
   static loadFromFile(filename) {
     let dirname = Serializable[environment].storage_path;
@@ -76,6 +82,7 @@ class Serializable {
    * @method serialize
    * @param  {any}   o Object to serialize.
    * @return {json}    Json text.
+   * @static
    */
   static serialize(o) {
     let r = function(k, v) {
@@ -92,6 +99,7 @@ class Serializable {
    * This method can deserialize any file with json text.
    * @method deserialize
    * @param  {json}    json [description]
+   * @static
    */
   static deserialize(json) {
     let r = function(k, v) {
@@ -109,12 +117,7 @@ class Serializable {
     return JSON.parse(json, r);
   }
 
-  /**
-   * Create jsclass-serializer object.  When use with jsclass-mixin, parameter
-   * should be set to point "this", otherwise no need to set parameter.
-   * @method constructor
-   * @param  {any}    baseclass Set "this", when use with jsclass-mixin.
-   */
+
   constructor(baseclass) {
     let that = baseclass || this;
 
@@ -132,6 +135,7 @@ class Serializable {
    * Serialize object to json format.
    * @method serialize
    * @return {json}    Json text.
+   * @memberof Serializable
    */
   serialize() {
     return Serializable.serialize(this);

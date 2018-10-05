@@ -1,10 +1,11 @@
 {
   "name": "jsclass-serializer",
-  "version": "0.1.5",
+  "version": "0.2.0",
   "description": "Srialize es6 class based object, and desrialize to its original class.",
   "main": "index.js",
   "scripts": {
-    "test": "mocha --recursive"
+    "test": "mocha --recursive",
+    "doc": "documentation build index.js -f md -o API.md"
   },
   "repository": {
     "type": "git",
@@ -23,6 +24,10 @@
   },
   "homepage": "https://github.com/kojiy7214/jsclass-serializer#readme",
   "devDependencies": {
+    "documentation": "^8.1.2",
     "mocha": "^5.2.0"
+  },
+  "dependencies": {
+    "uuid": "^3.3.2"
   }
 }

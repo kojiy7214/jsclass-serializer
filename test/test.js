@@ -129,6 +129,45 @@ describe('Serializable', function() {
     })
   })
 
+  describe('write to file test', function() {
+    it('#serializeToFile()', function() {
+      let sc = class SubClass extends Serializable {
+        constructor() {
+          super();
+
+          this._number = 1;
+          this._string = "test";
+          this._boolean = true;
+          this._array = [1, 2, 3];
+          this._date = new Date('1995-12-17T03:24:00.000Z');
+        }
+      };
+
+      let source = new sc();
+
+      Serializable.setStoragePath('./data/');
+      source.saveToFile();
+
+      let target = new sc();
+      target.loadFromFile(source.uuid);
+
+      //check type
+      assert.equal(target.classname, 'SubClass');
+      assert.equal(typeof target._number, 'number');
+      assert.equal(typeof target._string, 'string');
+      assert.equal(typeof target._boolean, 'boolean');
+      assert.equal(Array.isArray(target._array), true);
+      assert.equal(target._date instanceof Date, true);
+
+      //check value
+      assert.equal(target._number, 1);
+      assert.equal(target._string, 'test');
+      assert.equal(target._boolean, true);
+      assert.equal(target._array.toString(), [1, 2, 3].toString());
+      assert.equal(target._date.toISOString(), '1995-12-17T03:24:00.000Z');
+    })
+  })
+
   describe('use serializer with jsclass-mixin', function() {
     it('#serialize, deserialize()', function() {
       class B {};

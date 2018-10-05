@@ -122,25 +122,6 @@ console.log(c2.a);
 
 ### Table of Contents
 
--   [constructor][1]
-    -   [Parameters][2]
--   [setStoragePath][3]
-    -   [Parameters][4]
--   [serialize][5]
--   [saveToFile][6]
-    -   [Parameters][7]
--   [saveToFile][8]
--   [loadFromFile][9]
-    -   [Parameters][10]
--   [loadFromFile][11]
-    -   [Parameters][12]
--   [serialize][13]
-    -   [Parameters][14]
--   [deserialize][15]
-    -   [Parameters][16]
--   [deserialize][17]
-    -   [Parameters][18]
-
 ## constructor
 
 "jsclass-serializer" provides features to serialize and deserialize to memory

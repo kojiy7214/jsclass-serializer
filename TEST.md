@@ -1,6 +1,8 @@
 
 > jsclass-serializer@0.2.0 jsdoc /Volumes/SDDrive/Google Drive/project/JsDDD/lib/jsclass-serializer
-> jsdoc2md index.js
+> jsdoc2md --template README.hbs --files index.js
+
+[![view on npm](http://img.shields.io/npm/v/example.svg)](https://www.npmjs.org/package/example)
 
 ## Classes
 
@@ -22,10 +24,31 @@ and to file in json format.  Deserializing returns instance of original class.</
 
 ## Serializable
 **Kind**: global class  
+
+* [Serializable](#Serializable)
+    * [new Serializable()](#new_Serializable_new)
+    * [.saveToFile(o, filename)](#Serializable.saveToFile) ⇒ <code>json</code>
+
 <a name="new_Serializable_new"></a>
 
 ### new Serializable()
 [Serializable description]
+
+<a name="Serializable.saveToFile"></a>
+
+### Serializable.saveToFile(o, filename) ⇒ <code>json</code>
+Save serialized json object to file.  Where directory path would be the
+path previously set by setStoragePath().
+This method can serialize any type of object.
+
+**Kind**: static method of [<code>Serializable</code>](#Serializable)  
+**Returns**: <code>json</code> - Json text.  
+**Group**: Serializable  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| o | <code>any</code> | Object to serialize. |
+| filename | <code>string</code> | Filename to save object. |
 
 <a name="constructor"></a>
 
@@ -89,21 +112,6 @@ Set directory path to save/load serialized information to/from file.
 | --- | --- | --- |
 | p | <code>string</code> | Absolute or relative directory path |
 
-<a name="saveToFile"></a>
-
-## .saveToFile(o, filename) ⇒ <code>json</code>
-Save serialized json object to file.  Where directory path would be the
-path previously set by setStoragePath().
-This method can serialize any type of object.
-
-**Kind**: static function  
-**Returns**: <code>json</code> - Json text.  
-
-| Param | Type | Description |
-| --- | --- | --- |
-| o | <code>any</code> | Object to serialize. |
-| filename | <code>string</code> | Filename to save object. |
-
 <a name="loadFromFile"></a>
 
 ## .loadFromFile(filename) ⇒ <code>any</code>
@@ -143,3 +151,7 @@ This method can deserialize any file with json text.
 | --- | --- | --- |
 | json | <code>json</code> | [description] |
 
+
+* * *
+
+&copy; 1942-2016 Muhammad Ali

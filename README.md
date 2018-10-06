@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/kojiy7214/jsclass-serializer.svg?branch=master)](https://travis-ci.org/kojiy7214/jsclass-serializer)
+
 # jsclass-serializer
 Yet another serialize module for Node.js, with unique feature that deserialize to its original class based Object.
 

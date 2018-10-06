@@ -1,8 +1,8 @@
-'strict'
+'use strict'
 
 const assert = require('assert');
 const Serializable = require('../../jsclass-serializer')
-const mix = require('jsclass-mixin')
+const mix = require('../../jsclass-mixin')
 const fs = require("fs")
 
 describe('Serializable', function() {
@@ -86,7 +86,7 @@ describe('Serializable', function() {
 
       let json = source.serialize();
 
-      target = new sc();
+      let target = new sc();
       target.deserialize(json);
 
       //check type
@@ -214,11 +214,9 @@ describe('Serializable', function() {
     it('#serialize, deserialize()', function() {
       class B {};
 
-      class A extends mix(B, Serializable) {
+      class A extends mix(Serializable, B) {
         constructor() {
           super();
-
-          Serializable.new(this);
         }
       };
 

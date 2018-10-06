@@ -1,6 +1,6 @@
 {
   "name": "jsclass-serializer",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "Srialize es6 class based object, and desrialize to its original class.",
   "main": "index.js",
   "scripts": {

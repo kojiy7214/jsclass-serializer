@@ -2,7 +2,7 @@
 
 const assert = require('assert');
 const Serializable = require('../../jsclass-serializer')
-const mix = require('../../jsclass-mixin')
+const mix = require('jsclass-mixin')
 const fs = require("fs")
 
 describe('Serializable', function() {

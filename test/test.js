@@ -1,7 +1,7 @@
 const assert = require('assert');
 const Serializable = require('../../jsclass-serializer')
 const mix = require('jsclass-mixin')
-
+const fs = require("fs")
 
 describe('Serializable', function() {
   describe('Create sub class', function() {
@@ -166,6 +166,46 @@ describe('Serializable', function() {
       assert.equal(target._array.toString(), [1, 2, 3].toString());
       assert.equal(target._date.toISOString(), '1995-12-17T03:24:00.000Z');
     })
+  })
+
+  describe('load all files under storage path', function() {
+    it('#loadAll()', function() {
+      let dirname = "./data/";
+      Serializable.setStoragePath(dirname);
+
+      var targetRemoveFiles = fs.readdirSync(dirname);
+      for (var file in targetRemoveFiles) {
+        fs.unlinkSync(dirname + targetRemoveFiles[file]);
+      }
+
+      // 消したいフォルダを削除
+      fs.rmdirSync(dirname);
+
+
+
+      let nc = class NestedSubClass extends Serializable {};
+
+      let nc1 = new nc();
+      let nc2 = new nc();
+      let nc3 = new nc();
+
+      nc1.saveToFile();
+      nc2.saveToFile();
+      nc3.saveToFile();
+
+      let a = Serializable.loadAll();
+
+      assert.equal(a.length, 3);
+
+      nc3.flag = true;
+      nc3.saveToFile();
+
+      a = Serializable.loadAll(o => !o.flag);
+
+      assert.equal(a.length, 2);
+
+    })
+
   })
 
   describe('use serializer with jsclass-mixin', function() {

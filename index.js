@@ -12,10 +12,9 @@ class DateProxyForClassSerializer {
 }
 
 /**
- * "jsclass-serializer" provides features to serialize and deserialize to memory
- * and to file in json format.  Deserializing returns instance of original class.
- * @method constructor
- * @param  {any}    baseclass Set "this", when use with jsclass-mixin.
+ * Serializable object and deserialize back to its original class instance.
+ * Also supports save/load to/from file system.
+ * @class Serializable
  */
 class Serializable {
   /**
@@ -23,7 +22,7 @@ class Serializable {
    * @method setStoragePath
    * @param  {string}       p Absolute or relative directory path
    * @static
-   * @memberof Serializable.
+   * @memberof Serializable
    */
   static setStoragePath(p) {
     Serializable[environment].storage_path = p;
@@ -38,6 +37,7 @@ class Serializable {
    * @param  {string}   filename Filename to save object.
    * @return {json}     Json text.
    * @static
+   * @memberof Serializable
    */
   static saveToFile(o, filename) {
     let json = Serializable.serialize(o);
@@ -67,6 +67,7 @@ class Serializable {
    * @param  {string}     filename Filename to load json from.
    * @return {any}          Deserialized object.
    * @static
+   * @memberof Serializable
    */
   static loadFromFile(filename) {
     let dirname = Serializable[environment].storage_path;
@@ -77,12 +78,38 @@ class Serializable {
   }
 
   /**
+   * Load all json files under storage directory.
+   * @method loadAll
+   * @param  {function(object)} Callback function applies to retrieved objects.
+   * @return {Array} Retrieved objects.
+   * @static
+   * @memberof Serializable
+   */
+  static loadAll(callback) {
+    let dirname = Serializable[environment].storage_path;
+    let retval = [];
+    fs.readdirSync(dirname).forEach(file => {
+      let o = Serializable.loadFromFile(file);
+      let callback_returns = true;
+      if (callback) {
+        callback_returns = callback(o);
+      }
+
+      if (!callback_returns === false) {
+        retval.push(o);
+      }
+    });
+    return retval;
+  }
+
+  /**
    * Serialize object to json format.
    * This method can serialize any type of object.
    * @method serialize
    * @param  {any}   o Object to serialize.
    * @return {json}    Json text.
    * @static
+   * @memberof Serializable
    */
   static serialize(o) {
     let r = function(k, v) {
@@ -100,6 +127,7 @@ class Serializable {
    * @method deserialize
    * @param  {json}    json [description]
    * @static
+   * @memberof Serializable
    */
   static deserialize(json) {
     let r = function(k, v) {
@@ -117,7 +145,12 @@ class Serializable {
     return JSON.parse(json, r);
   }
 
-
+  /**
+   * "jsclass-serializer" provides features to serialize and deserialize to memory
+   * and to file in json format.  Deserializing returns instance of original class.
+   * @method constructor
+   * @param  {any}    baseclass Set "this", when use with jsclass-mixin.
+   */
   constructor(baseclass) {
     let that = baseclass || this;
 
@@ -135,6 +168,7 @@ class Serializable {
    * Serialize object to json format.
    * @method serialize
    * @return {json}    Json text.
+   * @instance
    * @memberof Serializable
    */
   serialize() {
@@ -147,6 +181,8 @@ class Serializable {
    * to given objects uuid.
    * @method saveToFile
    * @return {json}     Json text.
+   * @instance
+   * @memberof Serializable
    */
   saveToFile() {
     return Serializable.saveToFile(this, this.uuid);
@@ -156,6 +192,8 @@ class Serializable {
    * Deserialize json text to object
    * @method deserialize
    * @param  {json}    json [description]
+   * @instance
+   * @memberof Serializable
    */
   deserialize(json) {
     let o = Serializable.deserialize(json);
@@ -170,6 +208,8 @@ class Serializable {
    * be the path previously set by setStoragePath().
    * @method loadFromFile
    * @param  {string}     uuid Unique identifier to specify the file to load from.
+   * @instance
+   * @memberof Serializable
    */
   loadFromFile(uuid) {
     let o = Serializable.loadFromFile(uuid);
@@ -188,4 +228,8 @@ if (!Serializable[environment]) {
   Serializable[environment] = {};
 };
 
+/**
+ * A module for de/serializing objects.
+ * @module jsclass-serializer
+ */
 module.exports = Serializable;

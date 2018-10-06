@@ -1,3 +1,5 @@
+'strict'
+
 const assert = require('assert');
 const Serializable = require('../../jsclass-serializer')
 const mix = require('jsclass-mixin')

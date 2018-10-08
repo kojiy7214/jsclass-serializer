@@ -34,7 +34,7 @@ let array_of_object = Serializable.loadAll();
 ```
 
 ## Date Ready
-"jsclass-serializer" can de/serialize built-in Date type object collect.
+"jsclass-serializer" can de/serialize built-in Date type object.
 
 ## Works with "jsclass-mixin"
 When developer decide to extend his/her class from Serializable, developer

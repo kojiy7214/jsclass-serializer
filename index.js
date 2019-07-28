@@ -1,5 +1,5 @@
-var fs = require("fs");
-var uuid = require("uuid/v4")
+const fs = require("fs");
+const uuid = require("uuid/v4");
 
 let environment = Symbol();
 let srializable_classes = Symbol();
@@ -39,26 +39,27 @@ class Serializable {
    * @static
    * @memberof Serializable
    */
-  static saveToFile(o, filename) {
+  static saveToFile(o) {
     let json = Serializable.serialize(o);
     // if storage_path is not set, throw exception
-    if (!Serializable[environment].storage_path) {
-      throw "Set storage path with Serializable.setStoragePath() method";
+    if (!o.dir) {
+      throw new Error("PathNotDefined");
     }
 
     // check if storage path exists, if it doesnt create one
-    let dirname = Serializable[environment].storage_path;
-
+    let dirname = o.dir
     if (!fs.existsSync(dirname)) {
       fs.mkdirSync(dirname);
     }
 
     // overwrite file
+    let filename = o.uuid;
     let filepath = dirname + filename;
     fs.writeFileSync(filepath, json, "utf8", (error) => {});
 
     return json;
   }
+
   /**
    * Load json text from file and convert to object. Where directory path would
    * be the path previously set by setStoragePath().
@@ -101,7 +102,6 @@ class Serializable {
     });
     return retval;
   }
-
   /**
    * Serialize object to json format.
    * This method can serialize any type of object.
@@ -132,8 +132,9 @@ class Serializable {
   static deserialize(json) {
     let r = function(k, v) {
       if (v instanceof Object && v.classname) {
-        if (global[srializable_classes][v.classname]) {
-          let c = global[srializable_classes][v.classname];
+        if (Serializable[srializable_classes][v.classname]) {
+          let c = Serializable[srializable_classes][v.classname];
+
           v = Object.assign(new c(), v);
         } else if (v.classname === "DateProxyForClassSerializer") {
           return new Date(v.value);
@@ -149,16 +150,15 @@ class Serializable {
    * "jsclass-serializer" provides features to serialize and deserialize to memory
    * and to file in json format.  Deserializing returns instance of original class.
    * @method constructor
-   * @param  {any}    baseclass Set "this", when use with jsclass-mixin.
+   * @param  {String}    dir Path to save / load from.
    */
-  constructor(baseclass) {
-    let that = baseclass || this;
-
-    let classname = that.constructor.name;
-    global[srializable_classes][classname] = that.constructor;
-    that.classname = classname;
-    that.uuid = uuid();
-    Object.defineProperty(that, "classname", {
+  constructor(id, dir) {
+    this.dir = dir || Serializable[environment].storage_path;
+    let classname = this.constructor.name;
+    Serializable[srializable_classes][classname] = this.constructor;
+    this.classname = classname;
+    this.uuid = id || uuid();
+    Object.defineProperty(this, "classname", {
       configurable: false,
       writable: true,
     });
@@ -185,7 +185,7 @@ class Serializable {
    * @memberof Serializable
    */
   saveToFile() {
-    return Serializable.saveToFile(this, this.uuid);
+    return Serializable.saveToFile(this);
   }
 
   /**
@@ -196,11 +196,19 @@ class Serializable {
    * @memberof Serializable
    */
   deserialize(json) {
-    let o = Serializable.deserialize(json);
+    let r = function(k, v) {
+      if (v.classname === "DateProxyForClassSerializer") {
+        return new Date(v.value);
+      }
+      return v;
+    }
+
+    let o = JSON.parse(json, r);
     if (!this instanceof o.constructor) {
       throw "Type unmatch: [" + this.classname + "] is not instance of [" + o.constructor.name + "]";
     }
-    Object.assign(this, o);
+
+    return o;
   }
 
   /**
@@ -212,16 +220,19 @@ class Serializable {
    * @memberof Serializable
    */
   loadFromFile(uuid) {
-    let o = Serializable.loadFromFile(uuid);
-    if (!this instanceof o.constructor) {
-      throw "Type unmatch: [" + this.classname + "] is not instance of [" + o.constructor.name + "]";
-    }
+    let dirname = this.dir;
+    let filename = uuid || this.uuid;
+    let filepath = dirname + filename;
+    let json = fs.readFileSync(filepath);
+
+    let o = Serializable.deserialize(json);
+
     Object.assign(this, o);
   }
 }
 
-if (!global[srializable_classes]) {
-  global[srializable_classes] = {};
+if (!Serializable[srializable_classes]) {
+  Serializable[srializable_classes] = {};
 };
 
 if (!Serializable[environment]) {
